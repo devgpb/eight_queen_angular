@@ -25,5 +25,5 @@
   </div>
 </div>
 
-<div class="act"><button (click)="placeRandomQueen()">Colocar Dama Aleatória</button></div>
+<div class="act"><button *ngIf="calculando === false" (click)="placeRandomQueen()">Colocar Dama Aleatória</button></div>
 

@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 export class BoardComponent {
 
   public interacoes = 0
+  public calculando = false
+
 
   // Inicializa uma matriz representando as células do tabuleiro com status 'normal' e valor 1.
   rows: { event: string, status: string, value: number }[][] = Array.from({ length: 8 }, () =>
@@ -21,11 +23,13 @@ export class BoardComponent {
   async placeRandomQueen() {
     this.clearBoard(); // Limpa o tabuleiro antes de começar.
     this.interacoes = 0
+    this.calculando = true
     let graph = this.initializeGraph(); // Inicializa um grafo para controle das posições seguras.
     let success = await this.placeQueens(graph, 0); // Tenta colocar rainhas recursivamente.
     if (!success) {
       console.log('Nenhuma solução encontrada'); // Loga se não encontrar solução.
     }
+    this.calculando = false
   }
 
   // Inicializa o grafo com todos os valores como 'false', indicando que não há rainhas.

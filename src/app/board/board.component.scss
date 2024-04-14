@@ -9,10 +9,11 @@
 
 .hud{
   display: flex;
+  justify-content: center;
   width: calc(40% + 6px);
   margin: 0 auto;
-  background-color: black;
   color: white;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
   .counter{
     padding: 4px;
