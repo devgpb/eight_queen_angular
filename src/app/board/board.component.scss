@@ -3,8 +3,26 @@
   flex-direction: column;
   width: 40%;
   height: auto;
-  margin: 10px auto;
+  margin: 0 auto;
   border: 3px solid brown;
+}
+
+.hud{
+  display: flex;
+  width: calc(40% + 6px);
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+
+  .counter{
+    padding: 4px;
+    font-size: 23px;
+  }
+}
+
+.space{
+  height: 30px;
+  width: 1px;
 }
 
 .act{
@@ -13,7 +31,17 @@
   justify-content: center;
   margin-top: 20px;
   button{
+    background-color: #CD853F; /* Azul */
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 5px; /* Meio redondo */
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
+  button:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
   }
 }
 
@@ -37,6 +65,8 @@
 .white {
   background-color: white; // Um creme claro
 }
+
+
 
 .cell img {
   width: 100%;

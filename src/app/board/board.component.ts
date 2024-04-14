@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./board.component.scss'] // Caminho para os estilos específicos do componente.
 })
 export class BoardComponent {
+
+  public interacoes = 0
+
   // Inicializa uma matriz representando as células do tabuleiro com status 'normal' e valor 1.
   rows: { event: string, status: string, value: number }[][] = Array.from({ length: 8 }, () =>
     Array.from({ length: 8 }, () => ({ event: '', status: 'normal', value: 1 }))
@@ -17,6 +20,7 @@ export class BoardComponent {
   // Método assíncrono para iniciar a colocação de rainhas no tabuleiro.
   async placeRandomQueen() {
     this.clearBoard(); // Limpa o tabuleiro antes de começar.
+    this.interacoes = 0
     let graph = this.initializeGraph(); // Inicializa um grafo para controle das posições seguras.
     let success = await this.placeQueens(graph, 0); // Tenta colocar rainhas recursivamente.
     if (!success) {
@@ -33,6 +37,7 @@ export class BoardComponent {
   // Tenta colocar rainhas no tabuleiro de maneira recursiva.
   async placeQueens(graph: any[][], row: number) {
     if (row === 8) { // Base da recursão: todas as rainhas foram colocadas.
+      this.interacoes += 1
       return true;
     }
     for (let col = 0; col < 8; col++) {
@@ -40,9 +45,10 @@ export class BoardComponent {
         graph[row][col] = true; // Marca a posição no grafo.
         this.rows[row][col] = { event: '', status: 'queen', value: -1 }; // Atualiza a visualização.
         this.blink(row, col); // Aciona uma animação de blink.
-        await this.delay(200); // Espera por 200ms para visualização.
+        await this.delay(100); // Espera por 200ms para visualização.
 
         if (await this.placeQueens(graph, row + 1)) { // Recursão para a próxima linha.
+          this.interacoes += 1
           return true;
         }
 
@@ -50,6 +56,7 @@ export class BoardComponent {
         this.rows[row][col] = { event: '', status: 'normal', value: 1 }; // Restaura a célula.
       }
     }
+    this.interacoes += 1
     return false; // Retorna falso se não conseguir colocar uma rainha em nenhuma coluna desta linha.
   }
 
