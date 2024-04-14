@@ -3,8 +3,18 @@
   flex-direction: column;
   width: 40%;
   height: auto;
-  margin: 100px auto;
+  margin: 10px auto;
   border: 3px solid brown;
+}
+
+.act{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  button{
+
+  }
 }
 
 .row {
