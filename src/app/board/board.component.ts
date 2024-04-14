@@ -2,55 +2,95 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-board',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  selector: 'app-board', // Nome do seletor do componente.
+  standalone: true, // Define o componente como autônomo, não requerendo módulo para ser declarado.
+  imports: [CommonModule], // Importa CommonModule para usar diretivas comuns do Angular como ngIf, ngFor, etc.
+  templateUrl: './board.component.html', // Caminho para o arquivo de template HTML do componente.
+  styleUrls: ['./board.component.scss'] // Caminho para os estilos específicos do componente.
 })
 export class BoardComponent {
-  // Inicializa todas as células com 1, que representam marcadores amarelos
-  rows: number[][] = Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => 1));
+  // Inicializa uma matriz representando as células do tabuleiro com status 'normal' e valor 1.
+  rows: { event: string, status: string, value: number }[][] = Array.from({ length: 8 }, () =>
+    Array.from({ length: 8 }, () => ({ event: '', status: 'normal', value: 1 }))
+  );
 
-  placeRandomQueen() {
-    // Encontrar posições disponíveis onde não há rainhas ou caminhos de ataque
-    let stackReset = 0;
-
-    const availablePositions: { i: number; j: number }[] = [];
-    this.rows.forEach((row, i) => {
-      row.forEach((cell, j) => {
-        if (cell === 1) { // Verifica apenas células com marcadores amarelos
-          availablePositions.push({ i, j });
-        }
-      });
-    });
-
-    if (availablePositions.length === 0) {
-      this.clearBoard()
-      return;
+  // Método assíncrono para iniciar a colocação de rainhas no tabuleiro.
+  async placeRandomQueen() {
+    this.clearBoard(); // Limpa o tabuleiro antes de começar.
+    let graph = this.initializeGraph(); // Inicializa um grafo para controle das posições seguras.
+    let success = await this.placeQueens(graph, 0); // Tenta colocar rainhas recursivamente.
+    if (!success) {
+      console.log('Nenhuma solução encontrada'); // Loga se não encontrar solução.
     }
-
-    // Escolher uma posição aleatória das disponíveis
-    const position = availablePositions[Math.floor(Math.random() * availablePositions.length)];
-    this.updateAttackPaths(position.i, position.j);
   }
 
-  updateAttackPaths(row: number, col: number) {
-    // Atualiza as linhas, colunas e diagonais antes de colocar a rainha
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
-        // Se está na mesma linha, coluna ou diagonal, incrementa o contador de ataque
-        if (i === row || j === col || Math.abs(row - i) === Math.abs(col - j)) {
-          this.rows[i][j] = 2; // Marcador verde para células atacadas
+  // Inicializa o grafo com todos os valores como 'false', indicando que não há rainhas.
+  initializeGraph() {
+    let graph = new Array(8).fill(null).map(() => new Array(8).fill(false));
+    return graph;
+  }
+
+  // Tenta colocar rainhas no tabuleiro de maneira recursiva.
+  async placeQueens(graph: any[][], row: number) {
+    if (row === 8) { // Base da recursão: todas as rainhas foram colocadas.
+      return true;
+    }
+    for (let col = 0; col < 8; col++) {
+      if (this.isSafe(graph, row, col)) { // Verifica se é seguro colocar a rainha.
+        graph[row][col] = true; // Marca a posição no grafo.
+        this.rows[row][col] = { event: '', status: 'queen', value: -1 }; // Atualiza a visualização.
+        this.blink(row, col); // Aciona uma animação de blink.
+        await this.delay(200); // Espera por 200ms para visualização.
+
+        if (await this.placeQueens(graph, row + 1)) { // Recursão para a próxima linha.
+          return true;
         }
+
+        graph[row][col] = false; // Backtrack: remove a rainha se não levar a uma solução.
+        this.rows[row][col] = { event: '', status: 'normal', value: 1 }; // Restaura a célula.
       }
     }
-
-    // Marca a posição da rainha por último para evitar sobrescrita pelos incrementos
-    this.rows[row][col] = -1;
+    return false; // Retorna falso se não conseguir colocar uma rainha em nenhuma coluna desta linha.
   }
 
+  // Verifica se é seguro colocar uma rainha em uma dada posição.
+  isSafe(graph: any[][], row: number, col: number): boolean {
+    for (let i = 0; i < row; i++) {
+        if (graph[i][col]) {
+            return false; // Verifica a coluna.
+        }
+    }
+
+    for (let i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if (graph[i][j]) {
+            return false; // Verifica a diagonal principal.
+        }
+    }
+
+    for (let i = row, j = col; i >= 0 && j < 8; i--, j++) {
+        if (graph[i][j]) {
+            return false; // Verifica a diagonal secundária.
+        }
+    }
+
+    return true; // Retorna verdadeiro se a posição for segura.
+  }
+
+  // Aciona uma animação de "blink" alterando temporariamente o evento da célula.
+  blink(row: number, col: number) {
+    this.rows[row][col].event = 'blink';
+    setTimeout(() => {
+      this.rows[row][col].event = ''; // Remove o evento após 1 segundo.
+    }, 1000);
+  }
+
+  // Função para criar um atraso.
+  async delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Limpa o tabuleiro, redefinindo todas as células para o status 'normal'.
   clearBoard() {
-    this.rows = this.rows.map(row => row.map(() => 1)); // Reset para marcadores amarelos
+    this.rows = this.rows.map(row => row.map(() => ({ event: '', status: 'normal', value: 1 })));
   }
 }

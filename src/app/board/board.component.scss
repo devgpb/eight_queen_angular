@@ -35,16 +35,8 @@
 }
 
 .attack-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: green;
-  margin: auto;
-}
-
-.attack-indicator {
-  width: 10px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%; /* Faz a div ser um círculo */
   position: absolute; /* Posicionamento absoluto dentro da célula */
   background-color: green;
@@ -57,6 +49,26 @@
   background-color: yellow; /* Todas as células começam com o marcador amarelo */
   position: absolute; /* Posicionamento absoluto dentro da célula */
 }
+
+.analysis-indicator{
+  width: 100%;
+  height: 100%;
+  animation: blink 1s ease-in-out;
+}
+
+@keyframes blink {
+  0%, 100% {
+    background-color: initial; /* Cor inicial e final */
+    transition: background-color 0.5s ease; /* Suaviza a transição */
+  }
+  25%, 50% {
+    background-color: rgb(0, 153, 255); /* Azul marinho visível no meio da animação */
+    transition: background-color 0.5s ease;
+  }
+}
+
+
+
 
 .green {
   background-color: green;

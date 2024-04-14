@@ -4,13 +4,14 @@
     <div class="cell" *ngFor="let col of row; let j = index"
         [ngClass]="{
           'black': (i + j) % 2 === 1,
-          'white': (i + j) % 2 === 0
+          'white': (i + j) % 2 === 0,
         }">
-      <img *ngIf="col === -1" src="assets/queen.png" alt="Queen">
+      <div [ngClass]="{'analysis-indicator': col.event === 'blink'}"></div>
+      <img *ngIf="col.status === 'queen'" src="assets/queen.png" alt="Queen">
       <!-- Todos os marcadores iniciam como amarelos -->
-      <div *ngIf="col >= 1" class="cell-indicator"></div> <!-- Remove a classe 'red' -->
+      <!-- <div *ngIf="col.status === 'normal'" class="cell-indicator"></div>  -->
       <!-- Marcadores verdes apenas para células atacadas por uma rainha -->
-      <div *ngIf="col === 2" class="attack-indicator"></div>
+      <div *ngIf="col.status === 'attack'" class="attack-indicator"></div>
     </div>
 
   </div>
