@@ -1,0 +1,18 @@
+<div class="board">
+  <div class="row" *ngFor="let row of rows; let i = index">
+
+    <div class="cell" *ngFor="let col of row; let j = index"
+        [ngClass]="{
+          'black': (i + j) % 2 === 1,
+          'white': (i + j) % 2 === 0
+        }">
+      <img *ngIf="col === -1" src="assets/queen.png" alt="Queen">
+      <!-- Todos os marcadores iniciam como amarelos -->
+      <div *ngIf="col >= 1" class="cell-indicator"></div> <!-- Remove a classe 'red' -->
+      <!-- Marcadores verdes apenas para células atacadas por uma rainha -->
+      <div *ngIf="col === 2" class="attack-indicator"></div>
+    </div>
+
+  </div>
+</div>
+<button (click)="placeRandomQueen()">Colocar Dama Aleatória</button>

@@ -1,0 +1,75 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: auto;
+  margin: 100px auto;
+  border: 3px solid brown;
+}
+
+.row {
+  display: flex;
+  flex: 1;
+}
+
+.cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1; // Mantém as células quadradas
+}
+
+.black {
+  background-color: black; // Um verde escuro
+}
+
+.white {
+  background-color: white; // Um creme claro
+}
+
+.cell img {
+  width: 100%;
+  height: auto;
+  pointer-events: none; // Evita que a imagem interfira no clique da célula
+}
+
+.attack-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+  margin: auto;
+}
+
+.attack-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* Faz a div ser um círculo */
+  position: absolute; /* Posicionamento absoluto dentro da célula */
+  background-color: green;
+}
+
+.cell-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: yellow; /* Todas as células começam com o marcador amarelo */
+  position: absolute; /* Posicionamento absoluto dentro da célula */
+}
+
+.green {
+  background-color: green;
+}
+
+.red {
+  background-color: red;
+}
+
+
+
+@media only screen and (max-width: 720px){
+  .board{
+    width: 80%;
+  }
+}
