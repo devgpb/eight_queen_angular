@@ -41,7 +41,6 @@ export class BoardComponent {
   // Tenta colocar rainhas no tabuleiro de maneira recursiva.
   async placeQueens(graph: any[][], row: number) {
     if (row === 8) { // Base da recursão: todas as rainhas foram colocadas.
-      this.interacoes += 1
       return true;
     }
     for (let col = 0; col < 8; col++) {
@@ -59,8 +58,8 @@ export class BoardComponent {
         graph[row][col] = false; // Backtrack: remove a rainha se não levar a uma solução.
         this.rows[row][col] = { event: '', status: 'normal', value: 1 }; // Restaura a célula.
       }
+      this.interacoes += 1
     }
-    this.interacoes += 1
     return false; // Retorna falso se não conseguir colocar uma rainha em nenhuma coluna desta linha.
   }
 
@@ -90,9 +89,10 @@ export class BoardComponent {
   // Aciona uma animação de "blink" alterando temporariamente o evento da célula.
   blink(row: number, col: number) {
     this.rows[row][col].event = 'blink';
+    console.log("BlinkAt: rol = " + row + " col = " + col)
     setTimeout(() => {
       this.rows[row][col].event = ''; // Remove o evento após 1 segundo.
-    }, 1000);
+    }, 100);
   }
 
   // Função para criar um atraso.

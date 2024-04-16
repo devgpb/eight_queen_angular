@@ -14,7 +14,7 @@
           'black': (i + j) % 2 === 1,
           'white': (i + j) % 2 === 0,
         }">
-      <div [ngClass]="{'analysis-indicator': col.event === 'blink'}"></div>
+      <div [ngClass]="{'analysis-indicator': col.event == 'blink'}"></div>
       <img *ngIf="col.status === 'queen'" src="assets/queen.png" alt="Queen">
       <!-- Todos os marcadores iniciam como amarelos -->
       <!-- <div *ngIf="col.status === 'normal'" class="cell-indicator"></div> -->
